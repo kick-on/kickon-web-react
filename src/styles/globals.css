@@ -1,6 +1,6 @@
 @import 'tailwindcss';
-@import './styles/theme.css';
-@import './styles/font.css';
+@import './theme.css';
+@import './font.css';
 
 /* 기본적으로 좁은 화면 UI에서 추가로 넓은 화면 레이아웃을 설정하는 경우 */
 @custom-variant desktop {
