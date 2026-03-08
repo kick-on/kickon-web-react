@@ -17,7 +17,7 @@ export default function Profile({ onClickButton }: { onClickButton: () => void }
 	const [extraUserInfo, setExtraUserInfo] = useState<Omit<UserPointRankingDto, 'userId'> | null>(null);
 	const navigate = useNavigate();
 	const pathname = useLocation().pathname;
-	const searchParams = useSearchParams();
+	const [searchParams] = useSearchParams();
 
 	const handleLogoutButtonClick = () => {
 		onClickButton();

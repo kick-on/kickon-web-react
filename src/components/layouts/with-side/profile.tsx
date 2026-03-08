@@ -12,7 +12,7 @@ import { deleteCookie } from "@/lib/utils";
 export default function Profile() {
   const navigate = useNavigate();
   const pathname = useLocation().pathname;
-  const searchParams = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { openLoginModal } = useIsLoginModalOpenStore();
@@ -27,7 +27,8 @@ export default function Profile() {
 
   const fullUrl = `${pathname}${searchParams.toString() ? "?" + searchParams.toString() : ""}`;
 
-  const handleLoginButtonClick = () => {
+  const handleLoginButtonClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (pathname.split("/").includes("signup")) {
       navigate("/");
       sessionStorage.setItem("previousPage", "/");
