@@ -89,7 +89,7 @@ export default function Profile() {
                     width={60}
                     height={60}
                     src={
-                      currentUserInfo?.profileimgUrl || "/default-profile.svg"
+                      currentUserInfo?.profileImageUrl || "/default-profile.svg"
                     }
                     alt=""
                   />
