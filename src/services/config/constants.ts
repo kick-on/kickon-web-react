@@ -1,3 +1,3 @@
-export const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
-export const DOMAIN_URL = process.env.NEXT_PUBLIC_DOMAIN_URL;
-export const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL;
+export const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+export const DOMAIN_URL = import.meta.env.VITE_DOMAIN_URL;
+export const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
