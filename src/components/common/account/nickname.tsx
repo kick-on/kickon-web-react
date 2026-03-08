@@ -1,4 +1,4 @@
-import ClearIcon from "@/assets/common/x/white.svg";
+import ClearIcon from "@/assets/common/x/white.svg?react";
 
 export default function Nickname({
   nickname,

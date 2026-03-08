@@ -1,4 +1,4 @@
-import KickIcon from "@/assets/common/kick/fill-none.svg";
+import KickIcon from "@/assets/common/kick/fill-none.svg?react";
 import type { GameCommentDto } from "@/services/apis/game/game-reply.type";
 import clsx from "clsx";
 import { useToggleGameCommentKickMutation } from "@/lib/hooks/queries/useGameReplyQuery";

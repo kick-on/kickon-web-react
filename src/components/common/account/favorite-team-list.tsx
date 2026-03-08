@@ -19,7 +19,7 @@ import {
 } from '@dnd-kit/sortable';
 import { NO_CHEERING_TEAM_PK } from '@/lib/constants/noCheeringTeam';
 import type { TeamDto } from '@/services/apis/team/team.type';
-import PlusIcon from '@/assets/common/plus.svg';
+import PlusIcon from '@/assets/common/plus.svg?react';
 
 export default function FavoriteTeamList({
 	isEditable,

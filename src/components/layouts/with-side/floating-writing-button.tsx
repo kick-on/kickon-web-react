@@ -1,4 +1,4 @@
-import EditIcon from "@/assets/edit.svg";
+import EditIcon from "@/assets/edit.svg?react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 const FloatingWritingButton = () => {

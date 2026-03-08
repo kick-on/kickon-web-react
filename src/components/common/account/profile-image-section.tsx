@@ -1,7 +1,7 @@
 
 import { getPresignedUrl, uploadToS3 } from '@/services/apis/image-upload';
 import { useRef } from 'react';
-import CameraIcon from '@/assets/common/camera.svg';
+import CameraIcon from '@/assets/common/camera.svg?react';
 
 export default function ProfileImageSection({
 	profileImageUrl,

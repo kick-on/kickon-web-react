@@ -4,8 +4,8 @@ import type { UserPointRankingDto } from '@/services/apis/user-point-event/user-
 import { useEffect, useState } from 'react';
 import Divider from '../mobile-navbar/sidebar/divider';
 import clsx from 'clsx';
-import Instagram from '@/assets/sns/instagram.svg';
-import X from '@/assets/sns/x.svg';
+import Instagram from '@/assets/sns/instagram.svg?react';
+import X from '@/assets/sns/x.svg?react';
 import useAuthStore from '@/lib/store/useAuthStore';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { deleteCookie } from '@/lib/utils';
@@ -138,10 +138,10 @@ export default function Profile({ onClickButton }: { onClickButton: () => void }
 						aria-label={'인스타그램으로 이동'}
 						onClick={() => window.open('https://www.instagram.com/kickonfc/', '_blank')}
 					>
-						<Instagram className="w-6 h-6 object-contain" src={'/sns/instagram.svg'} alt="" />
+						<Instagram className="w-6 h-6 object-contain" />
 					</button>
 					<button aria-label={'X로 이동'} onClick={() => window.open('https://x.com/kickonfc', '_blank')}>
-						<X className="w-6 h-6 object-contain" src={'/sns/x.svg'} alt="" />
+						<X className="w-6 h-6 object-contain" />
 					</button>
 				</div>
 			</div>

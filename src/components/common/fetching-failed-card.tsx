@@ -1,4 +1,4 @@
-import RotateIcon from "@/assets/common/rotate.svg";
+import RotateIcon from "@/assets/common/rotate.svg?react";
 
 export default function FetchingFailedCard({
   height,

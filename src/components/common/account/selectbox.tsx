@@ -6,7 +6,7 @@ import type { LeagueDto } from "@/services/apis/league/league.type";
 import { NO_CHEERING_TEAM_PK } from "@/lib/constants/noCheeringTeam";
 import { useCurrentUserInfoStore } from "@/lib/store/useCurrentUserInfoStore";
 import { separateMonthAndDay } from "@/lib/utils";
-import ChevronIcon from "@/assets/common/chevron/down.svg";
+import ChevronIcon from "@/assets/common/chevron/down.svg?react";
 
 export default function Selectbox({
   category,

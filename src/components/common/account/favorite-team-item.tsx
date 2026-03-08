@@ -4,8 +4,8 @@ import clsx from 'clsx';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { NO_CHEERING_TEAM_PK } from '@/lib/constants/noCheeringTeam';
-import DeleteIcon from '@/assets/common/x/small.svg';
-import DragIcon from '@/assets/common/draggable.svg';
+import DeleteIcon from '@/assets/common/x/small.svg?react';
+import DragIcon from '@/assets/common/draggable.svg?react';
 
 export default function FavoriteTeamItem({
 	team,
