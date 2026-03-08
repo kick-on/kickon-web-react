@@ -65,9 +65,7 @@ export default function ButtonSection({
 
   const reLogin = () => {
     const redirectUrl = `${DOMAIN_URL || "http://localhost:3000"}/api/auth/${provider}/callback`;
-    navigate(
-      `${SERVER_URL}/oauth2/authorization/${provider}?state=${redirectUrl}`,
-    );
+    window.location.href = `${SERVER_URL}/oauth2/authorization/${provider}?state=${redirectUrl}`;
   };
 
   const buttons = [

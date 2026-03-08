@@ -7,6 +7,7 @@ import { getUserInfo } from "@/services/apis/user/user.api";
 import { useEffect, useState } from "react";
 import useAuthStore from "@/lib/store/useAuthStore";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { deleteCookie } from "@/lib/utils";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -38,11 +39,12 @@ export default function Profile() {
 
   const handleLogoutButtonClick = () => {
     setIsLoggedIn(false);
-    fetch("/api/logout", { method: "POST" }).then(() => {
-      clearCurrentUserInfo(); // 클라이언트 user info 초기화
-      clearToken();
-      navigate("/");
-    });
+    // 클라이언트 사이드 로그아웃 처리
+    deleteCookie("accessToken");
+    deleteCookie("refreshToken");
+    clearCurrentUserInfo(); // 클라이언트 user info 초기화
+    clearToken();
+    navigate("/");
   };
 
   const handleProfileSettingButtonClick = () => {
