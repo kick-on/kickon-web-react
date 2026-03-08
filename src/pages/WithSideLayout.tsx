@@ -1,7 +1,5 @@
-import { Suspense } from 'react';
-import { Outlet } from "react-router-dom";
+import { Outlet } from 'react-router-dom';
 import LeftSide from '@/components/layouts/with-side/left-side';
-import FloatingWritingButton from '@/components/layouts/with-side/floating-writing-button';
 
 export default function WithSideLayout() {
 	return (
@@ -13,9 +11,6 @@ export default function WithSideLayout() {
 			<main className="flex flex-col items-center gap-4">
 				<div className="relative @mobile:w-dvw @mobile:px-4">
 					<Outlet />
-					<Suspense>
-						<FloatingWritingButton />
-					</Suspense>
 				</div>
 			</main>
 		</div>
