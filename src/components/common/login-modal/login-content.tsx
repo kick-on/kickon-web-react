@@ -12,8 +12,7 @@ export default function LoginContent({ onClose }) {
 	};
 
 	const handleSocialButtonClick = (provider: 'naver' | 'kakao') => {
-		// api route 호출
-		const redirectUrl = `${DOMAIN_URL || 'http://localhost:5173'}/api/auth/${provider}/callback`;
+		const redirectUrl = `${DOMAIN_URL || 'http://localhost:3000'}/auth/callback/${provider}`;
 		window.location.href = `${SERVER_URL}/oauth2/authorization/${provider}?state=${redirectUrl}`;
 	};
 

@@ -8,6 +8,7 @@ import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
 import AuthFinalize from "@/pages/AuthFinalize";
+import AuthCallback from "@/pages/AuthCallback";
 import Withdrawal from "@/pages/Withdrawal";
 import ProfileSetting from "@/pages/ProfileSetting";
 import Ranking from "@/pages/Ranking";
@@ -64,6 +65,10 @@ export const router = createBrowserRouter([
 			{
 				path: ROUTE_PATH.AUTH,
 				children: [
+					{
+						path: "callback/:provider",
+						element: <AuthCallback />,
+					},
 					{
 						path: "finalize",
 						element: <AuthFinalize />,
