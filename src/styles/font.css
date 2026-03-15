@@ -1,420 +1,437 @@
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'Pretendard';
+  src: url('../fonts/PretendardVariable.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* 테마 변수 방식 */
 
 @theme {
-	/* Font Family */
-	--font-pretendard: 'Pretendard';
+  /* Font Family */
+  --font-pretendard: 'Pretendard', 'sans-serif';
 
-	/* Header (semibold) */
-	--text-header-01: 15px;
-	--text-header-01--line-height: 16px;
-	--text-header-01--font-weight: 600;
+  /* Header (semibold) */
+  --text-header-01: 15px;
+  --text-header-01--line-height: 16px;
+  --text-header-01--font-weight: 600;
 
-	/* Display (semibold) */
-	--text-display-01: 36px;
-	--text-display-01--line-height: 36px;
-	--text-display-01--font-weight: 600;
+  /* Display (semibold) */
+  --text-display-01: 36px;
+  --text-display-01--line-height: 36px;
+  --text-display-01--font-weight: 600;
 
-	--text-display-02: 24px;
-	--text-display-02--line-height: 36px;
-	--text-display-02--font-weight: 600;
+  --text-display-02: 24px;
+  --text-display-02--line-height: 36px;
+  --text-display-02--font-weight: 600;
 
-	--text-display-03: 20px;
-	--text-display-03--line-height: 32px;
-	--text-display-03--font-weight: 600;
+  --text-display-03: 20px;
+  --text-display-03--line-height: 32px;
+  --text-display-03--font-weight: 600;
 
-	/* Title (semibold)*/
-	--text-title-01: 28px;
-	--text-title-01--line-height: 36px;
-	--text-title-01--font-weight: 600;
+  /* Title (semibold)*/
+  --text-title-01: 28px;
+  --text-title-01--line-height: 36px;
+  --text-title-01--font-weight: 600;
 
-	--text-title-02: 24px;
-	--text-title-02--line-height: 32px;
-	--text-title-02--font-weight: 600;
+  --text-title-02: 24px;
+  --text-title-02--line-height: 32px;
+  --text-title-02--font-weight: 600;
 
-	--text-title-03: 20px;
-	--text-title-03--line-height: var(--lh-normal);
-	--text-title-03--font-weight: 600;
+  --text-title-03: 20px;
+  --text-title-03--line-height: var(--lh-normal);
+  --text-title-03--font-weight: 600;
 
-	--text-title-04: 18px;
-	--text-title-04--line-height: 20px;
-	--text-title-04--font-weight: 600;
+  --text-title-04: 18px;
+  --text-title-04--line-height: 20px;
+  --text-title-04--font-weight: 600;
 
-	--text-title-05: 16px;
-	--text-title-05--line-height: 16px;
-	--text-title-05--font-weight: 600;
+  --text-title-05: 16px;
+  --text-title-05--line-height: 16px;
+  --text-title-05--font-weight: 600;
 
-	/* Subtitle (medium) */
-	--text-subtitle-01: 14px;
-	--text-subtitle-01--line-height: 16px;
-	--text-subtitle-01--font-weight: 500;
+  /* Subtitle (medium) */
+  --text-subtitle-01: 14px;
+  --text-subtitle-01--line-height: 16px;
+  --text-subtitle-01--font-weight: 500;
 
-	--text-subtitle-02: 13px;
-	--text-subtitle-02--line-height: 18px;
-	--text-subtitle-02--font-weight: 500;
+  --text-subtitle-02: 13px;
+  --text-subtitle-02--line-height: 18px;
+  --text-subtitle-02--font-weight: 500;
 
-	/* Body (regular) */
-	--text-body-01: 24px;
-	--text-body-01--line-height: 24px;
-	--text-body-01--font-weight: 400;
+  /* Body (regular) */
+  --text-body-01: 24px;
+  --text-body-01--line-height: 24px;
+  --text-body-01--font-weight: 400;
 
-	--text-body-02: 20px;
-	--text-body-02--line-height: 24px;
-	--text-body-02--font-weight: 400;
+  --text-body-02: 20px;
+  --text-body-02--line-height: 24px;
+  --text-body-02--font-weight: 400;
 
-	--text-body-03: 16px;
-	--text-body-03--line-height: 24px;
-	--text-body-03--font-weight: 400;
+  --text-body-03: 16px;
+  --text-body-03--line-height: 24px;
+  --text-body-03--font-weight: 400;
 
-	--text-body-04: 15px;
-	--text-body-04--line-height: 16px;
-	--text-body-04--font-weight: 400;
+  --text-body-04: 15px;
+  --text-body-04--line-height: 16px;
+  --text-body-04--font-weight: 400;
 
-	--text-body-05: 14px;
-	--text-body-05--line-height: 16px;
-	--text-body-05--font-weight: 400;
+  --text-body-05: 14px;
+  --text-body-05--line-height: 16px;
+  --text-body-05--font-weight: 400;
 
-	--text-body-06: 13px;
-	--text-body-06--line-height: 20px;
-	--text-body-06--font-weight: 400;
+  --text-body-06: 13px;
+  --text-body-06--line-height: 20px;
+  --text-body-06--font-weight: 400;
 
-	--text-body-07-regular: 12px;
-	--text-body-07-regular--line-height: 20px;
-	--text-body-07-regular--font-weight: 400;
+  --text-body-07-regular: 12px;
+  --text-body-07-regular--line-height: 20px;
+  --text-body-07-regular--font-weight: 400;
 
-	--text-body-08: 10px;
-	--text-body-08--line-height: 16px;
-	--text-body-08--font-weight: 400;
+  --text-body-08: 10px;
+  --text-body-08--line-height: 16px;
+  --text-body-08--font-weight: 400;
 
-	/* Button (medium)*/
-	--text-button-01: 18px;
-	--text-button-01--line-height: 24px;
-	--text-button-01--font-weight: 500;
+  /* Button (medium)*/
+  --text-button-01: 18px;
+  --text-button-01--line-height: 24px;
+  --text-button-01--font-weight: 500;
 
-	--text-button-02: 16px;
-	--text-button-02--line-height: 28px;
-	--text-button-02--font-weight: 500;
+  --text-button-02: 16px;
+  --text-button-02--line-height: 28px;
+  --text-button-02--font-weight: 500;
 
-	--text-button-03: 15px;
-	--text-button-03--line-height: 16px;
-	--text-button-03--font-weight: 500;
+  --text-button-03: 15px;
+  --text-button-03--line-height: 16px;
+  --text-button-03--font-weight: 500;
 
-	--text-button-04: 14px;
-	--text-button-04--line-height: 16px;
-	--text-button-04--font-weight: 500;
+  --text-button-04: 14px;
+  --text-button-04--line-height: 16px;
+  --text-button-04--font-weight: 500;
 
-	--text-button-05: 12px;
-	--text-button-05--line-height: 16px;
-	--text-button-05--font-weight: 500;
+  --text-button-05: 12px;
+  --text-button-05--line-height: 16px;
+  --text-button-05--font-weight: 500;
 
-	--text-button-06: 10px;
-	--text-button-06--line-height: 16px;
-	--text-button-06--font-weight: 500;
+  --text-button-06: 10px;
+  --text-button-06--line-height: 16px;
+  --text-button-06--font-weight: 500;
 
-	/* Captions (regular) */
-	--text-caption-01: 12px;
-	--text-caption-01--line-height: 16px;
-	--text-caption-01--font-weight: 400;
+  /* Captions (regular) */
+  --text-caption-01: 12px;
+  --text-caption-01--line-height: 16px;
+  --text-caption-01--font-weight: 400;
 
-	--text-caption-02: 10px;
-	--text-caption-02--line-height: var(--lh-normal);
-	--text-caption-02--font-weight: 400;
+  --text-caption-02: 10px;
+  --text-caption-02--line-height: var(--lh-normal);
+  --text-caption-02--font-weight: 400;
 
-	/* Navigation (medium)*/
-	--text-nav-01: 18px;
-	--text-nav-01--line-height: 24px;
-	--text-nav-01--font-weight: 500;
+  /* Navigation (medium)*/
+  --text-nav-01: 18px;
+  --text-nav-01--line-height: 24px;
+  --text-nav-01--font-weight: 500;
 }
 
 /* 기존 개별 클래스 */
 
 @layer components {
-	/* Base Typography */
-	[class*='-'] {
-		font-family: var(--font-pretendard);
-	}
+  /* Base Typography */
+  [class*='-'] {
+    font-family: var(--font-pretendard);
+  }
 
-	/* Headers */
-	.header-semibold,
-	.header-medium,
-	.header-regular {
-		font-size: var(--text-15);
-		line-height: var(--lh-16);
-	}
+  /* Headers */
+  .header-semibold,
+  .header-medium,
+  .header-regular {
+    font-size: var(--text-15);
+    line-height: var(--lh-16);
+  }
 
-	.header-semibold {
-		font-weight: var(--font-weight-semibold);
-	}
-	.header-medium {
-		font-weight: var(--font-weight-medium);
-	}
-	.header-regular {
-		font-weight: var(--font-weight-regular);
-	}
+  .header-semibold {
+    font-weight: var(--font-weight-semibold);
+  }
 
-	/* Display */
-	.display-semibold {
-		font-size: var(--text-24);
-		font-weight: var(--font-weight-semibold);
-		line-height: var(--lh-36);
-	}
+  .header-medium {
+    font-weight: var(--font-weight-medium);
+  }
 
-	/* Titles */
-	.title1-bold {
-		font-size: var(--text-28);
-		font-weight: var(--font-weight-bold);
-		line-height: var(--lh-36);
-	}
+  .header-regular {
+    font-weight: var(--font-weight-regular);
+  }
 
-	.title2-semibold {
-		font-size: var(--text-24);
-		font-weight: var(--font-weight-semibold);
-		line-height: var(--lh-26);
-	}
+  /* Display */
+  .display-semibold {
+    font-size: var(--text-24);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--lh-36);
+  }
 
-	.title3-semibold {
-		font-size: var(--text-20);
-		font-weight: var(--font-weight-semibold);
-		line-height: var(--lh-normal);
-	}
+  /* Titles */
+  .title1-bold {
+    font-size: var(--text-28);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--lh-36);
+  }
 
-	.title4-semibold {
-		font-size: var(--text-18);
-		font-weight: var(--font-weight-semibold);
-		line-height: var(--lh-20);
-	}
+  .title2-semibold {
+    font-size: var(--text-24);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--lh-26);
+  }
 
-	.title5-semibold {
-		font-size: var(--text-16);
-		font-weight: var(--font-weight-semibold);
-		line-height: var(--lh-16);
-	}
+  .title3-semibold {
+    font-size: var(--text-20);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--lh-normal);
+  }
 
-	/* Subtitles */
-	.subtitle1-semibold,
-	.subtitle1-medium {
-		font-size: var(--text-14);
-		line-height: var(--lh-16);
-	}
+  .title4-semibold {
+    font-size: var(--text-18);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--lh-20);
+  }
 
-	.subtitle1-semibold {
-		font-weight: var(--font-weight-semibold);
-	}
-	.subtitle1-medium {
-		font-weight: var(--font-weight-medium);
-	}
+  .title5-semibold {
+    font-size: var(--text-16);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--lh-16);
+  }
 
-	.subtitle2-medium {
-		font-size: var(--text-13);
-		font-weight: var(--font-weight-medium);
-		line-height: var(--lh-18);
-	}
+  /* Subtitles */
+  .subtitle1-semibold,
+  .subtitle1-medium {
+    font-size: var(--text-14);
+    line-height: var(--lh-16);
+  }
 
-	.subtitle2-regular {
-		font-size: var(--text-13);
-		font-weight: var(--font-weight-regular);
-		line-height: var(--lh-24);
-	}
+  .subtitle1-semibold {
+    font-weight: var(--font-weight-semibold);
+  }
 
-	/* Bodies */
-	.body1-bold {
-		font-size: var(--text-24);
-		font-weight: var(--font-weight-black);
-		line-height: var(--lh-24);
-	}
+  .subtitle1-medium {
+    font-weight: var(--font-weight-medium);
+  }
 
-	.body2-semibold,
-	.body2-regular {
-		font-size: var(--text-20);
-		line-height: var(--lh-24);
-	}
+  .subtitle2-medium {
+    font-size: var(--text-13);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--lh-18);
+  }
 
-	.body2-semibold {
-		font-weight: var(--font-weight-semibold);
-	}
-	.body2-regular {
-		font-weight: var(--font-weight-regular);
-	}
+  .subtitle2-regular {
+    font-size: var(--text-13);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--lh-24);
+  }
 
-	.body3-regular {
-		font-size: var(--text-16);
-		font-weight: var(--font-weight-regular);
-		line-height: var(--lh-24);
-	}
+  /* Bodies */
+  .body1-bold {
+    font-size: var(--text-24);
+    font-weight: var(--font-weight-black);
+    line-height: var(--lh-24);
+  }
 
-	.body4-medium,
-	.body4-semibold {
-		font-size: var(--text-15);
-		line-height: var(--lh-16);
-	}
+  .body2-semibold,
+  .body2-regular {
+    font-size: var(--text-20);
+    line-height: var(--lh-24);
+  }
 
-	.body4-medium {
-		font-weight: var(--font-weight-medium);
-	}
+  .body2-semibold {
+    font-weight: var(--font-weight-semibold);
+  }
 
-	.body4-semibold {
-		font-weight: var(--font-weight-semibold);
-	}
+  .body2-regular {
+    font-weight: var(--font-weight-regular);
+  }
 
-	.body5-medium,
-	.body5-regular {
-		font-size: var(--text-14);
-		line-height: var(--lh-16);
-	}
+  .body3-regular {
+    font-size: var(--text-16);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--lh-24);
+  }
 
-	.body5-medium {
-		font-weight: var(--font-weight-medium);
-	}
-	.body5-regular {
-		font-weight: var(--font-weight-regular);
-	}
+  .body4-medium,
+  .body4-semibold {
+    font-size: var(--text-15);
+    line-height: var(--lh-16);
+  }
 
-	.body6-medium,
-	.body6-regular {
-		font-size: var(--text-13);
-	}
+  .body4-medium {
+    font-weight: var(--font-weight-medium);
+  }
 
-	.body6-medium {
-		font-weight: var(--font-weight-medium);
-		line-height: var(--lh-18);
-	}
+  .body4-semibold {
+    font-weight: var(--font-weight-semibold);
+  }
 
-	.body6-regular {
-		font-weight: var(--font-weight-regular);
-		line-height: var(--lh-16);
-	}
+  .body5-medium,
+  .body5-regular {
+    font-size: var(--text-14);
+    line-height: var(--lh-16);
+  }
 
-	.body7-medium {
-		font-size: var(--text-12);
-		font-weight: var(--font-weight-medium);
-		line-height: var(--lh-16);
-	}
+  .body5-medium {
+    font-weight: var(--font-weight-medium);
+  }
 
-	.body7-regular {
-		font-size: var(--text-12);
-		font-weight: var(--font-weight-regular);
-		line-height: var(--lh-20);
-	}
+  .body5-regular {
+    font-weight: var(--font-weight-regular);
+  }
 
-	.body8-regular {
-		font-size: var(--text-10);
-		font-weight: var(--font-weight-regular);
-		line-height: var(--lh-16);
-	}
+  .body6-medium,
+  .body6-regular {
+    font-size: var(--text-13);
+  }
 
-	/* Buttons */
-	.button1-medium {
-		font-size: var(--text-18);
-		font-weight: var(--font-weight-medium);
-		line-height: var(--lh-24);
-	}
+  .body6-medium {
+    font-weight: var(--font-weight-medium);
+    line-height: var(--lh-18);
+  }
 
-	.button2-semibold,
-	.button2-medium {
-		font-size: var(--text-16);
-	}
+  .body6-regular {
+    font-weight: var(--font-weight-regular);
+    line-height: var(--lh-16);
+  }
 
-	.button2-semibold {
-		font-weight: var(--font-weight-semibold);
-		line-height: var(--lh-28);
-	}
+  .body7-medium {
+    font-size: var(--text-12);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--lh-16);
+  }
 
-	.button2-medium {
-		font-weight: var(--font-weight-medium);
-		line-height: var(--lh-24);
-	}
+  .body7-regular {
+    font-size: var(--text-12);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--lh-20);
+  }
 
-	.button3-semibold,
-	.button3-regular {
-		font-size: var(--text-15);
-		line-height: var(--lh-16);
-	}
+  .body8-regular {
+    font-size: var(--text-10);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--lh-16);
+  }
 
-	.button3-semibold {
-		font-weight: var(--font-weight-semibold);
-	}
-	.button3-regular {
-		font-weight: var(--font-weight-regular);
-	}
+  /* Buttons */
+  .button1-medium {
+    font-size: var(--text-18);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--lh-24);
+  }
 
-	.button4-medium,
-	.button4-semibold {
-		font-size: var(--text-14);
-		line-height: var(--lh-16);
-	}
+  .button2-semibold,
+  .button2-medium {
+    font-size: var(--text-16);
+  }
 
-	.button4-medium {
-		font-weight: var(--font-weight-medium);
-	}
-	.button4-semibold {
-		font-weight: var(--font-weight-semibold);
-	}
+  .button2-semibold {
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--lh-28);
+  }
 
-	.button5-medium,
-	.button5-semibold,
-	.button5-regular {
-		font-size: var(--text-12);
-		line-height: var(--lh-16);
-	}
+  .button2-medium {
+    font-weight: var(--font-weight-medium);
+    line-height: var(--lh-24);
+  }
 
-	.button5-medium {
-		font-weight: var(--font-weight-medium);
-	}
-	.button5-semibold {
-		font-weight: var(--font-weight-semibold);
-	}
-	.button5-regular {
-		font-weight: var(--font-weight-regular);
-	}
+  .button3-semibold,
+  .button3-regular {
+    font-size: var(--text-15);
+    line-height: var(--lh-16);
+  }
 
-	.button6-semibold {
-		font-size: var(--text-10);
-		font-weight: var(--font-weight-semibold);
-		line-height: 10px;
-	}
+  .button3-semibold {
+    font-weight: var(--font-weight-semibold);
+  }
 
-	.button6-regular {
-		font-size: var(--text-10);
-		font-weight: var(--font-weight-regular);
-		line-height: var(--lh-16);
-	}
+  .button3-regular {
+    font-weight: var(--font-weight-regular);
+  }
 
-	/* Captions */
-	.caption1-medium,
-	.caption1-regular {
-		font-size: var(--text-12);
-	}
+  .button4-medium,
+  .button4-semibold {
+    font-size: var(--text-14);
+    line-height: var(--lh-16);
+  }
 
-	.caption1-medium {
-		font-weight: var(--font-weight-medium);
-		line-height: var(--lh-normal);
-	}
+  .button4-medium {
+    font-weight: var(--font-weight-medium);
+  }
 
-	.caption1-regular {
-		font-weight: var(--font-weight-regular);
-		line-height: var(--lh-16);
-	}
+  .button4-semibold {
+    font-weight: var(--font-weight-semibold);
+  }
 
-	.caption2-medium,
-	.caption2-regular {
-		font-size: var(--text-10);
-	}
+  .button5-medium,
+  .button5-semibold,
+  .button5-regular {
+    font-size: var(--text-12);
+    line-height: var(--lh-16);
+  }
 
-	.caption2-medium {
-		font-weight: var(--font-weight-medium);
-		line-height: var(--lh-16);
-	}
+  .button5-medium {
+    font-weight: var(--font-weight-medium);
+  }
 
-	.caption2-regular {
-		font-weight: var(--font-weight-regular);
-		line-height: var(--lh-normal);
-	}
+  .button5-semibold {
+    font-weight: var(--font-weight-semibold);
+  }
 
-	/* Navigation */
-	.nav1-medium {
-		font-size: var(--text-18);
-		font-weight: var(--font-weight-medium);
-		line-height: var(--lh-24);
-	}
+  .button5-regular {
+    font-weight: var(--font-weight-regular);
+  }
+
+  .button6-semibold {
+    font-size: var(--text-10);
+    font-weight: var(--font-weight-semibold);
+    line-height: 10px;
+  }
+
+  .button6-regular {
+    font-size: var(--text-10);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--lh-16);
+  }
+
+  /* Captions */
+  .caption1-medium,
+  .caption1-regular {
+    font-size: var(--text-12);
+  }
+
+  .caption1-medium {
+    font-weight: var(--font-weight-medium);
+    line-height: var(--lh-normal);
+  }
+
+  .caption1-regular {
+    font-weight: var(--font-weight-regular);
+    line-height: var(--lh-16);
+  }
+
+  .caption2-medium,
+  .caption2-regular {
+    font-size: var(--text-10);
+  }
+
+  .caption2-medium {
+    font-weight: var(--font-weight-medium);
+    line-height: var(--lh-16);
+  }
+
+  .caption2-regular {
+    font-weight: var(--font-weight-regular);
+    line-height: var(--lh-normal);
+  }
+
+  /* Navigation */
+  .nav1-medium {
+    font-size: var(--text-18);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--lh-24);
+  }
 }
