@@ -16,6 +16,7 @@ export async function fetcher<T>({ url, method, headers, body }: FetcherParams) 
 
 		return fetch(`${SERVER_URL}${url}`, {
 			method,
+			credentials: 'include',
 			headers: {
 				...(token ? { Authorization: `Bearer ${token}` } : {}),
 				...(hasBody ? { 'Content-Type': 'application/json' } : {}),

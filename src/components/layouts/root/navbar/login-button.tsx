@@ -33,7 +33,7 @@ export default function LoginButton({ onClickProfile }: { onClickProfile?: () =>
 		}
 
 		if (isMobile) {
-			navigate('/login');
+			navigate('/signup'); // login -> signup으로 수정
 		} else {
 			openLoginModal();
 		}
@@ -91,7 +91,7 @@ export default function LoginButton({ onClickProfile }: { onClickProfile?: () =>
 						w-[5.5rem] h-[2.25rem] button1-medium bg-black-000 text-primary-900
 						@mobile:mr-0 @mobile:w-[3.8125rem] @mobile:h-7 @mobile:text-14 @mobile:font-medium"
 				>
-					로그인
+					가입
 				</button>
 			)}
 		</>

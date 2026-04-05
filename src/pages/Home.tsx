@@ -1,138 +1,131 @@
-import { useEffect, useState } from "react";
-import clsx from "clsx";
-import FetchingFailedCard from "@/components/common/fetching-failed-card";
-import GameComment from "@/components/features/home/game-comment";
-import AiAnalytics from "@/components/features/home/ai-analytics";
-import PredictCard from "@/components/features/home/predict-card";
-import FloatingCalendarButton from "@/components/features/calendar/mobile-only/floating-calendar-button";
-import CalendarPopover from "@/components/features/calendar/mobile-only/calendar-popover";
-import { getGames } from "@/services/apis/game/game.api";
-import useIsMobile from "@/lib/hooks/useIsMobile";
-import { useCurrentUserInfoStore } from "@/lib/store/useCurrentUserInfoStore";
-import { useCalendarStore } from "@/lib/store/useCalendarStore";
-import { formatFromTo } from "@/lib/utils";
-import type { GameTaggedLeagueDto } from "@/services/apis/game/game.type";
+import { useCallback, useEffect, useState } from 'react';
+import clsx from 'clsx';
+import FetchingFailedCard from '@/components/common/fetching-failed-card';
+import GameComment from '@/components/features/home/game-comment';
+import AiAnalytics from '@/components/features/home/ai-analytics';
+import PredictCard from '@/components/features/home/predict-card';
+import FloatingCalendarButton from '@/components/features/calendar/mobile-only/floating-calendar-button';
+import CalendarPopover from '@/components/features/calendar/mobile-only/calendar-popover';
+import { getGames } from '@/services/apis/game/game.api';
+import useIsMobile from '@/lib/hooks/useIsMobile';
+import { useCurrentUserInfoStore } from '@/lib/store/useCurrentUserInfoStore';
+import { useCalendarStore } from '@/lib/store/useCalendarStore';
+import { formatFromTo } from '@/lib/utils';
+import type { GameTaggedLeagueDto } from '@/services/apis/game/game.type';
 
 export default function Home() {
-  const isMobile = useIsMobile();
-  const [games, setGames] = useState<GameTaggedLeagueDto[]>([]);
-  const [isError, setIsError] = useState(false);
-  const { currentUserInfo } = useCurrentUserInfoStore();
-  const { selectedDate } = useCalendarStore();
-  const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
+	const isMobile = useIsMobile();
+	const [games, setGames] = useState<GameTaggedLeagueDto[]>([]);
+	const [isError, setIsError] = useState(false);
+	const { currentUserInfo } = useCurrentUserInfoStore();
+	const { selectedDate } = useCalendarStore();
+	const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
 
-  useEffect(() => {
-    document.body.style.backgroundColor = "var(--color-black-800)";
+	useEffect(() => {
+		document.body.style.backgroundColor = 'var(--color-black-800)';
 
-    return () => {
-      document.body.style.backgroundColor = "var(--color-black-100)";
-    };
-  }, []);
+		return () => {
+			document.body.style.backgroundColor = 'var(--color-black-100)';
+		};
+	}, []);
 
-  useEffect(() => {
-    const fetchGames = async () => {
-      try {
-        const fromDate = new Date(selectedDate);
-        fromDate.setDate(selectedDate.getDate() - 7);
+	// 1. fetchGames를 useCallback으로 감싸서 밖으로 꺼냅니다.
+	const fetchGames = useCallback(async () => {
+		try {
+			const fromDate = new Date(selectedDate);
+			fromDate.setDate(selectedDate.getDate() - 7);
 
-        const toDate = new Date(selectedDate);
-        toDate.setDate(selectedDate.getDate() + 7);
+			const toDate = new Date(selectedDate);
+			toDate.setDate(selectedDate.getDate() + 7);
 
-        const [proceedingRes, finishedRes] = await Promise.all([
-          getGames({
-            league: 1,
-            status: "proceeding",
-            team: undefined,
-            from: formatFromTo(fromDate),
-            to: formatFromTo(toDate),
-          }),
-          getGames({
-            league: 1,
-            status: "finished",
-            team: undefined,
-            from: formatFromTo(fromDate),
-            to: formatFromTo(toDate),
-          }),
-        ]);
+			const [proceedingRes, finishedRes] = await Promise.all([
+				getGames({
+					league: 1,
+					status: 'proceeding',
+					from: formatFromTo(fromDate),
+					to: formatFromTo(toDate),
+				}),
+				getGames({
+					league: 1,
+					status: 'finished',
+					from: formatFromTo(fromDate),
+					to: formatFromTo(toDate),
+				}),
+			]);
 
-        const proceedingGames = proceedingRes?.data ?? [];
-        const finishedGames = finishedRes?.data ?? [];
+			const proceedingGames = proceedingRes?.data ?? [];
+			const finishedGames = finishedRes?.data ?? [];
 
-        setGames([...proceedingGames, ...finishedGames]);
-      } catch (error) {
-        setIsError(true);
-      }
-    };
+			setGames([...proceedingGames, ...finishedGames]);
+		} catch (error) {
+			setIsError(true);
+		}
+	}, [selectedDate]); // selectedDate가 바뀔 때만 함수 재생성
 
-    fetchGames();
-  }, [currentUserInfo, selectedDate]);
+	// 2. 초기 로드 및 의존성 변경 시 실행
+	useEffect(() => {
+		fetchGames();
+	}, [fetchGames, currentUserInfo]); // fetchGames가 바뀌거나 유저 정보가 바뀌면 실행
 
-  if (isError) {
-    return (
-      <div
-        className={clsx(
-          "text-center text-subtitle-02 py-10 space-y-3 max-w-[41.75rem] bg-white rounded-lg border border-black-300",
-          {
-            "w-[41.75rem]": !isMobile,
-          },
-        )}
-      >
-        <FetchingFailedCard height="" marginTop="" />
-      </div>
-    );
-  }
+	if (isError) {
+		return (
+			<div
+				className={clsx(
+					'text-center text-subtitle-02 py-10 space-y-3 max-w-[41.75rem] bg-white rounded-lg border border-black-300',
+					{
+						'w-[41.75rem]': !isMobile,
+					},
+				)}
+			>
+				<FetchingFailedCard height="" marginTop="" />
+			</div>
+		);
+	}
 
-  return (
-    <>
-      <div className="grid grid-cols-1 min-[120rem]:grid-cols-2 gap-6 pb-90">
-        {/* 승부 예측 */}
-        {games.length === 0 ? (
-          <div
-            className={clsx(
-              "text-center text-subtitle-02 py-10 space-y-3 max-w-[41.75rem] bg-white rounded-lg border border-black-300",
-              {
-                "w-[41.75rem]": !isMobile,
-              },
-            )}
-          >
-            지금은 진행 중인 경기가 없어요.
-          </div>
-        ) : (
-          games.flatMap(({ league, games }) =>
-            games.map((game) => (
-              <div
-                key={game.pk}
-                className={clsx(
-                  "py-4 space-y-3 max-w-[41.75rem] bg-white rounded-lg border border-black-300",
-                  {
-                    "w-[41.75rem]": !isMobile,
-                  },
-                )}
-              >
-                <PredictCard
-                  type={game.homeScore !== null ? "finished" : "proceeding"}
-                  league={league}
-                  game={game}
-                />
-                {game.homeScore !== null && <AiAnalytics pk={game.pk} />}
-                <GameComment pk={game.pk} />
-              </div>
-            )),
-          )
-        )}
-      </div>
-      <div className="fixed bottom-15 right-3 z-50">
-        <div className="relative ml-auto">
-          <CalendarPopover
-            isCalendarOpen={isCalendarModalOpen}
-            onClose={() => setIsCalendarModalOpen(false)}
-          />
+	return (
+		<>
+			<div className="grid grid-cols-1 min-[120rem]:grid-cols-2 gap-6 pb-90">
+				{/* 승부 예측 */}
+				{games.length === 0 ? (
+					<div
+						className={clsx(
+							'text-center text-subtitle-02 py-10 space-y-3 max-w-[41.75rem] bg-white rounded-lg border border-black-300',
+							{
+								'w-[41.75rem]': !isMobile,
+							},
+						)}
+					>
+						지금은 진행 중인 경기가 없어요.
+					</div>
+				) : (
+					games.flatMap(({ league, games }) =>
+						games.map((game) => (
+							<div
+								key={game.pk}
+								className={clsx('py-4 space-y-3 max-w-[41.75rem] bg-white rounded-lg border border-black-300', {
+									'w-[41.75rem]': !isMobile,
+								})}
+							>
+								<PredictCard
+									type={game.homeScore !== null ? 'finished' : 'proceeding'}
+									league={league}
+									game={game}
+									refetchGames={fetchGames}
+								/>
+								{game.homeScore !== null && <AiAnalytics pk={game.pk} />}
+								<GameComment pk={game.pk} />
+							</div>
+						)),
+					)
+				)}
+			</div>
+			<div className="fixed bottom-15 right-3 z-50">
+				<div className="relative ml-auto">
+					<CalendarPopover isCalendarOpen={isCalendarModalOpen} onClose={() => setIsCalendarModalOpen(false)} />
 
-          <FloatingCalendarButton
-            onClick={() => setIsCalendarModalOpen((prev) => !prev)}
-          />
-        </div>
-      </div>
-    </>
-  );
+					<FloatingCalendarButton onClick={() => setIsCalendarModalOpen((prev) => !prev)} />
+				</div>
+			</div>
+		</>
+	);
 }

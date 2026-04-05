@@ -1,8 +1,10 @@
 import type {
+	GetLoginDeviceResponse,
+	GetNicknameAvailableResponse,
 	GetUserInfoResponse,
-	NicknameAvailableResponse,
+	LoginDeviceRequest,
+	PostSignupDeviceResponse,
 	SignupDeviceRequest,
-	SignupDeviceResponse,
 	UpdatePrivacyRequest,
 	UpdateUserInfoRequest,
 } from './user.type';
@@ -52,7 +54,7 @@ export const deleteUserMe = async (body: { reason: string }) => {
 
 // 닉네임 중복 api
 export const checkNicknameAvailable = async (nickname: string) => {
-	const response = await fetcher<NicknameAvailableResponse>({
+	const response = await fetcher<GetNicknameAvailableResponse>({
 		method: 'GET',
 		url: `/auth/nickname/available?nickname=${encodeURIComponent(nickname)}`,
 	});
@@ -62,12 +64,20 @@ export const checkNicknameAvailable = async (nickname: string) => {
 
 // 디바이스 회원가입 api
 export const signupWithDevice = async (body: SignupDeviceRequest) => {
-	const response = await fetcher<SignupDeviceResponse>({
+	const response = await fetcher<PostSignupDeviceResponse>({
 		method: 'POST',
 		url: '/auth/signup/device',
 		body,
-		// 쿠키 기반 인증을 사용한다면 fetcher 내부에서 credentials: 'include'가 설정되어 있어야 함
 	});
 
 	return response;
+};
+
+// 디바이스 로그인 api
+export const loginWithDevice = async (body: LoginDeviceRequest) => {
+	return await fetcher<GetLoginDeviceResponse>({
+		method: 'POST',
+		url: '/auth/login/device',
+		body,
+	});
 };

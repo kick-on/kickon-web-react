@@ -1,7 +1,10 @@
 'use client';
 
 import clsx from 'clsx';
-import type { PatchGameGambleRequest, PostGameGambleRequest } from '@/services/apis/user-game-gamble/user-game-gamble.type';
+import type {
+	PatchGameGambleRequest,
+	PostGameGambleRequest,
+} from '@/services/apis/user-game-gamble/user-game-gamble.type';
 import GameInfoBox, { GameInfoBoxProps } from './game-info-box';
 import TeamButton from './team-button';
 import CompleteButton from './complete-button';
@@ -95,6 +98,7 @@ export default function PredictCard({
 			alert(`로그인이 필요한 서비스입니다.\n로그인 후 이용해 주세요.`);
 			return;
 		}
+		console.log(currentUserInfo);
 
 		const currentButton = (e.target as HTMLElement).closest('[id]').id;
 
@@ -147,29 +151,35 @@ export default function PredictCard({
 	const handleCompleteButtonClick = async () => {
 		try {
 			if (isEditing) {
-				// 수정 중인 상태에서는 patch 함수 호출
 				const request: PatchGameGambleRequest = {
 					gamble: myGambleResult?.id,
 					predictedHomeScore: leftScore,
 					predictedAwayScore: rightScore,
 				};
 				await patchGameGamble(request);
-
 				setIsEditing(false);
-				refetchGames();
 			} else {
-				// 새로 생성하는 경우 post 함수 호출
 				const request: PostGameGambleRequest = {
 					game: pk,
 					predictedHomeScore: leftScore,
 					predictedAwayScore: rightScore,
 				};
 				await postGameGamble(request);
-
-				refetchGames();
 			}
+
+			// 서버 데이터가 다시 올 때까지 기다림
+			if (refetchGames) {
+				await refetchGames();
+			}
+
+			// 성공했으므로 이제 완료 상태임을 명시적으로 알림
+			setIsCompleted(true);
+			setIsClicked(false);
 		} catch (error) {
-			alert(error.errorData.message);
+			// 안전하게 에러 메시지 추출
+			const errorMessage = error?.errorData?.message || error?.message || '알 수 없는 오류가 발생했습니다.';
+			console.error('에러 발생:', error);
+			alert(errorMessage);
 		} finally {
 			setIsClicked(false);
 			setIsCompleted(isEditing ? true : false); // 수정 중이었으면 다시 완료됨 상태로, 예측 생성 중이었으면 초기 상태로

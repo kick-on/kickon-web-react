@@ -56,6 +56,8 @@ export interface NicknameAvailableResponse {
 	available: boolean;
 }
 
+export type GetNicknameAvailableResponse = SuccessResponse<NicknameAvailableResponse>;
+
 // 회원가입 request
 export interface SignupDeviceRequest {
 	nickname: string;
@@ -73,3 +75,11 @@ export interface SignupDeviceResponse {
 	};
 	signupCompleted: boolean;
 }
+export type PostSignupDeviceResponse = SuccessResponse<SignupDeviceResponse>;
+
+export interface LoginDeviceRequest {
+	nickname: string;
+	deviceCredential: string;
+}
+
+export type GetLoginDeviceResponse = SuccessResponse<SignupDeviceResponse>;
