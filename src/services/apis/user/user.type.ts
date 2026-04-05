@@ -48,3 +48,28 @@ export interface UserDto {
 	profileImageUrl: string;
 	isReporter: boolean;
 }
+
+// --- 새로운 회원가입 플로우 ---
+
+// 닉네임 중복 확인
+export interface NicknameAvailableResponse {
+	available: boolean;
+}
+
+// 회원가입 request
+export interface SignupDeviceRequest {
+	nickname: string;
+	deviceCredential: string;
+	teams: number[];
+	profileImageUrl?: string;
+	privacyAgreedAt: string;
+	marketingAgreedAt?: string;
+}
+
+export interface SignupDeviceResponse {
+	token: {
+		accessToken: string;
+		refreshToken: string;
+	};
+	signupCompleted: boolean;
+}

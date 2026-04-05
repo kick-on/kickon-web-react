@@ -1,4 +1,11 @@
-import type { GetUserInfoResponse, UpdatePrivacyRequest, UpdateUserInfoRequest } from './user.type';
+import type {
+	GetUserInfoResponse,
+	NicknameAvailableResponse,
+	SignupDeviceRequest,
+	SignupDeviceResponse,
+	UpdatePrivacyRequest,
+	UpdateUserInfoRequest,
+} from './user.type';
 import type { EmptySuccessResponse } from '../../config/dto';
 import { fetcher } from '@/lib/server/fetcher';
 
@@ -36,6 +43,30 @@ export const deleteUserMe = async (body: { reason: string }) => {
 		method: 'DELETE',
 		url: '/api/user/me',
 		body,
+	});
+
+	return response;
+};
+
+// --- 새로운 회원가입 플로우 ---
+
+// 닉네임 중복 api
+export const checkNicknameAvailable = async (nickname: string) => {
+	const response = await fetcher<NicknameAvailableResponse>({
+		method: 'GET',
+		url: `/auth/nickname/available?nickname=${encodeURIComponent(nickname)}`,
+	});
+
+	return response;
+};
+
+// 디바이스 회원가입 api
+export const signupWithDevice = async (body: SignupDeviceRequest) => {
+	const response = await fetcher<SignupDeviceResponse>({
+		method: 'POST',
+		url: '/auth/signup/device',
+		body,
+		// 쿠키 기반 인증을 사용한다면 fetcher 내부에서 credentials: 'include'가 설정되어 있어야 함
 	});
 
 	return response;
