@@ -5,7 +5,7 @@ export default defineConfig({
 	brand: {
 		displayName: '킥온',
 		primaryColor: '#c00c0b',
-		icon: '/kick-on-icon.png',
+		icon: 'https://static.toss.im/appsintoss/21251/aa5fdfd5-898a-4d96-bb32-9dadcc838101.png',
 	},
 	web: {
 		host: 'localhost',
