@@ -1,0 +1,250 @@
+'use client';
+
+import clsx from 'clsx';
+import type {
+	PatchGameGambleRequest,
+	PostGameGambleRequest,
+} from '@/services/apis/user-game-gamble/user-game-gamble.type';
+import GameInfoBox, { GameInfoBoxProps } from './game-info-box';
+import TeamButton from './team-button';
+import CompleteButton from './complete-button';
+import Header, { HeaderProps } from './header';
+import { useEffect, useState } from 'react';
+import {
+	deleteGameGamble,
+	patchGameGamble,
+	postGameGamble,
+} from '@/services/apis/user-game-gamble/user-game-gamble.api';
+import { useCurrentUserInfoStore } from '@/lib/store/useCurrentUserInfoStore';
+import type { GameDto } from '@/services/apis/game/game.type';
+import { addCommas, formatDate, getRelativeTime, getServerDeviceType } from '@/lib/utils';
+import type { LeagueDto } from '@/services/apis/league/league.type';
+
+export default function PredictCard({
+	game,
+	league,
+	type,
+	refetchGames,
+}: {
+	game: GameDto;
+	league: LeagueDto;
+	type: 'proceeding' | 'finished';
+	refetchGames?: () => void;
+}) {
+	const { pk, gambleResult, myGambleResult, homeScore, awayScore, gameStatus, startAt } = game;
+
+	const { isMobile, isTablet } = getServerDeviceType();
+
+	const isFinished = type === 'finished';
+
+	const { formattedDate, formattedWeekday, formattedTime } = formatDate(startAt);
+	const startDate = `${formattedDate} (${formattedWeekday})`;
+	const startTime = formattedTime;
+
+	const participations = addCommas(gambleResult.participationNumber);
+	const timeBefore = getRelativeTime(startAt);
+
+	const isGambleInProgress = type === 'proceeding'; // 예측 진행 중
+	const isGameInProgress = type === 'finished' && (gameStatus === 'PENDING' || gameStatus === 'PROCEEDING'); // 경기 중
+	const isGameCanceled = gameStatus === 'CANCELED' || gameStatus === 'POSTPONED';
+	const isGameCompleted = gameStatus === 'HOME' || gameStatus === 'DRAW' || gameStatus === 'AWAY';
+
+	const [isClicked, setIsClicked] = useState(false);
+	const [isCompleted, setIsCompleted] = useState(!!myGambleResult);
+	const [isEditing, setIsEditing] = useState(false);
+
+	const { currentUserInfo } = useCurrentUserInfoStore();
+
+	// proceeding 카드: 내 예측 점수 또는 0으로 초기화
+	// finished 카드: 실제 경기 득점 또는 경기 중이면 -1로 초기화
+	const [leftScore, setLeftScore] = useState(
+		(isFinished ? (isGameInProgress ? -1 : homeScore) : myGambleResult?.homeScore) || 0,
+	);
+	const [rightScore, setRightScore] = useState(
+		(isFinished ? (isGameInProgress ? -1 : awayScore) : myGambleResult?.awayScore) || 0,
+	);
+	const selectedButton = !isClicked
+		? 'none'
+		: leftScore > rightScore
+			? 'home'
+			: leftScore === rightScore
+				? 'draw'
+				: 'away';
+
+	// TODO: league가 games 밖으로 빠진 구조로 변경 필요
+	const headerProps: HeaderProps = {
+		leagueName: league?.nameKr || league?.nameEn,
+		isGambleInProgress,
+		isGameInProgress,
+		isGameCanceled,
+		startDate,
+		startTime,
+		timeBefore,
+		myGambleResult,
+	};
+
+	const gameInfoBoxProps: GameInfoBoxProps = {
+		isGambleInProgress,
+		isGameInProgress,
+		isGameCanceled,
+		isGameCompleted,
+		startDate,
+		startTime,
+	};
+
+	const handleTeamButtonClick = async (e) => {
+		// 로그인 하지 않은 경우 사용 제한
+		if (!currentUserInfo) {
+			alert(`로그인이 필요한 서비스입니다.\n로그인 후 이용해 주세요.`);
+			return;
+		}
+		console.log(currentUserInfo);
+
+		const currentButton = (e.target as HTMLElement).closest('[id]').id;
+
+		// 선택이 완료된 상태에서 다시 클릭 시 득점 업다운 버튼 활성화
+		if (isCompleted) {
+			setIsCompleted(false);
+			setIsEditing(true);
+			setIsClicked(true);
+		} else {
+			// 동일 버튼 클릭 시 선택 종료
+			if (selectedButton === currentButton) {
+				// 기존 예측이 있는 경우에는 예측 삭제
+				if (myGambleResult) {
+					try {
+						await deleteGameGamble(myGambleResult.id);
+					} catch (error) {
+						alert(error.errorData.message);
+
+						setIsClicked(false);
+						setIsCompleted(isEditing ? true : false); // 수정 중이었으면 다시 완료됨 상태로, 예측 생성 중이었으면 초기 상태로
+						setIsEditing(false);
+						return;
+					}
+				}
+				setIsClicked(false);
+				setIsCompleted(false);
+				setIsEditing(false);
+				setLeftScore(0);
+				setRightScore(0);
+				refetchGames();
+			} else {
+				switch (currentButton) {
+					case 'home':
+						setLeftScore(1);
+						setRightScore(0);
+						break;
+					case 'draw':
+						setLeftScore(0);
+						setRightScore(0);
+						break;
+					case 'away':
+						setLeftScore(0);
+						setRightScore(1);
+				}
+				setIsClicked(true);
+			}
+		}
+	};
+
+	const handleCompleteButtonClick = async () => {
+		try {
+			if (isEditing) {
+				const request: PatchGameGambleRequest = {
+					gamble: myGambleResult?.id,
+					predictedHomeScore: leftScore,
+					predictedAwayScore: rightScore,
+				};
+				await patchGameGamble(request);
+				setIsEditing(false);
+			} else {
+				const request: PostGameGambleRequest = {
+					game: pk,
+					predictedHomeScore: leftScore,
+					predictedAwayScore: rightScore,
+				};
+				await postGameGamble(request);
+			}
+
+			// 서버 데이터가 다시 올 때까지 기다림
+			if (refetchGames) {
+				await refetchGames();
+			}
+
+			// 성공했으므로 이제 완료 상태임을 명시적으로 알림
+			setIsCompleted(true);
+			setIsClicked(false);
+		} catch (error) {
+			// 안전하게 에러 메시지 추출
+			const errorMessage = error?.errorData?.message || error?.message || '알 수 없는 오류가 발생했습니다.';
+			console.error('에러 발생:', error);
+			alert(errorMessage);
+		} finally {
+			setIsClicked(false);
+			setIsCompleted(isEditing ? true : false); // 수정 중이었으면 다시 완료됨 상태로, 예측 생성 중이었으면 초기 상태로
+		}
+	};
+
+	useEffect(() => {
+		// 서버에서 최신 데이터가 내려오면 로컬 상태를 동기화
+		if (myGambleResult) {
+			setIsCompleted(true);
+			setIsClicked(false);
+			setIsEditing(false);
+			setLeftScore(myGambleResult.homeScore);
+			setRightScore(myGambleResult.awayScore);
+		} else {
+			// 내 예측 데이터가 없으면 초기 상태로
+			setIsCompleted(false);
+			// 편집 중이 아닐 때만 0으로 초기화 (사용자가 입력 중인 건 방해 안 함)
+			if (!isClicked) {
+				setLeftScore(isFinished ? (isGameInProgress ? -1 : homeScore) : 0);
+				setRightScore(isFinished ? (isGameInProgress ? -1 : awayScore) : 0);
+			}
+		}
+	}, [myGambleResult, homeScore, awayScore]); // TODO: 낙관적 업데이트 적용 필요, 지금은 서버 값에 의존하게끔 해둠
+
+	return (
+		<div
+			className={clsx(
+				`flex flex-col justify-center px-4 max-w-[41.75rem]
+				overflow-hidden`,
+				{
+					'text-black-700': isFinished && !isGameInProgress,
+					'w-[41.75rem]': !isMobile,
+				},
+			)}
+		>
+			<Header {...headerProps} />
+
+			<div className={clsx('grid grid-cols-[auto_1fr] grid-rows-[auto_auto]', { 'gap-x-1.5': !isMobile })}>
+				{!isMobile ? <GameInfoBox {...gameInfoBoxProps} /> : <div></div>}
+				<TeamButton
+					onClick={handleTeamButtonClick}
+					selectedButton={selectedButton}
+					leftScore={leftScore}
+					rightScore={rightScore}
+					setLeftScore={setLeftScore}
+					setRightScore={setRightScore}
+					game={game}
+					isMobile={isMobile}
+					isTablet={isTablet}
+					isClicked={isClicked}
+					isCompleted={isCompleted}
+					isEditing={isEditing}
+					isFinished={isFinished}
+					isGameInProgress={isGameInProgress}
+				/>
+				<div></div>
+				{isClicked && (
+					<div className={clsx('relative', isMobile || isTablet ? 'mt-22' : 'mt-4')}>
+						<CompleteButton onClick={handleCompleteButtonClick} />
+					</div>
+				)}
+			</div>
+
+			<footer className="mt-2 caption1-regular text-black-700 text-right">{participations}명 참여</footer>
+		</div>
+	);
+}
