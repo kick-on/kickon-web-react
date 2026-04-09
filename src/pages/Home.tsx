@@ -29,7 +29,6 @@ export default function Home() {
 		};
 	}, []);
 
-	// 1. fetchGames를 useCallback으로 감싸서 밖으로 꺼냅니다.
 	const fetchGames = useCallback(async () => {
 		try {
 			const fromDate = new Date(selectedDate);
@@ -62,7 +61,6 @@ export default function Home() {
 		}
 	}, [selectedDate]); // selectedDate가 바뀔 때만 함수 재생성
 
-	// 2. 초기 로드 및 의존성 변경 시 실행
 	useEffect(() => {
 		fetchGames();
 	}, [fetchGames, currentUserInfo]); // fetchGames가 바뀌거나 유저 정보가 바뀌면 실행
