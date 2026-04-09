@@ -5,7 +5,7 @@ export default defineConfig({
 	brand: {
 		displayName: '킥온',
 		primaryColor: '#c00c0b',
-		icon: '/favicon.svg',
+		icon: '/kick-on-icon.png',
 	},
 	web: {
 		host: 'localhost',
