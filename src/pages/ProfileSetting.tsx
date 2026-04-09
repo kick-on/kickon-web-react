@@ -38,7 +38,7 @@ export default function ProfileSetting() {
 	};
 
 	return (
-		<div className="m-auto w-[21.5rem] flex flex-col">
+		<div className="m-auto pb-10 w-[21.5rem] flex flex-col">
 			<ProfileImageSection profileImageUrl={profileImageUrl} setProfileImageUrl={setProfileImageUrl} />
 
 			<div className="w-full flex flex-col gap-10">

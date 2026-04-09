@@ -97,7 +97,7 @@ export default function Signup() {
 				<FavoriteTeamSection type="signup" setTeams={setTeams} />
 			</div>
 
-			<div className="p-2.5 w-full flex flex-col gap-4">
+			<div className="p-2.5 pb-10 w-full flex flex-col gap-4">
 				{agreementDatas.map(({ key, content, hasTerm, documentUrl }) => (
 					<Checkbox
 						key={key}
