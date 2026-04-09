@@ -16,7 +16,7 @@ export default function AuthInitializer({ children }: { children: React.ReactNod
 			const currentToken = getToken ? getToken() : accessToken;
 
 			if (currentToken) {
-				// 🔥 [핵심] 토큰은 있는데 유저 정보가 없으면 가져온다!
+				// 토큰은 있는데 유저 정보가 없으면 가져온다
 				if (!currentUserInfo) {
 					try {
 						await fetchUserInfo();
