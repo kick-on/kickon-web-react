@@ -2,15 +2,32 @@ import { useEffect, useState } from 'react';
 import useAuthStore from '@/lib/store/useAuthStore';
 import { loginWithDevice } from '@/services/apis/user/user.api';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useCurrentUserInfoStore } from '@/lib/store/useCurrentUserInfoStore';
 
 export default function AuthInitializer({ children }: { children: React.ReactNode }) {
-	const { accessToken, setToken } = useAuthStore();
+	const { accessToken, getToken, setToken } = useAuthStore();
+	const { currentUserInfo, fetchUserInfo } = useCurrentUserInfoStore();
 	const [isLoading, setIsLoading] = useState(true);
 	const navigate = useNavigate();
 	const location = useLocation();
 
 	useEffect(() => {
 		const initializeAuth = async () => {
+			const currentToken = getToken ? getToken() : accessToken;
+
+			if (currentToken) {
+				// 토큰은 있는데 유저 정보가 없으면 가져온다
+				if (!currentUserInfo) {
+					try {
+						await fetchUserInfo();
+					} catch (e) {
+						console.error('유저 정보 로드 실패');
+					}
+				}
+				setIsLoading(false);
+				return;
+			}
+
 			// 1. 이미 로그인 상태라면 로직 종료
 			if (accessToken) {
 				setIsLoading(false);

@@ -9,7 +9,7 @@ import GameInfoBox, { GameInfoBoxProps } from './game-info-box';
 import TeamButton from './team-button';
 import CompleteButton from './complete-button';
 import Header, { HeaderProps } from './header';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
 	deleteGameGamble,
 	patchGameGamble,
@@ -185,6 +185,25 @@ export default function PredictCard({
 			setIsCompleted(isEditing ? true : false); // 수정 중이었으면 다시 완료됨 상태로, 예측 생성 중이었으면 초기 상태로
 		}
 	};
+
+	useEffect(() => {
+		// 서버에서 최신 데이터가 내려오면 로컬 상태를 동기화
+		if (myGambleResult) {
+			setIsCompleted(true);
+			setIsClicked(false);
+			setIsEditing(false);
+			setLeftScore(myGambleResult.homeScore);
+			setRightScore(myGambleResult.awayScore);
+		} else {
+			// 내 예측 데이터가 없으면 초기 상태로
+			setIsCompleted(false);
+			// 편집 중이 아닐 때만 0으로 초기화 (사용자가 입력 중인 건 방해 안 함)
+			if (!isClicked) {
+				setLeftScore(isFinished ? (isGameInProgress ? -1 : homeScore) : 0);
+				setRightScore(isFinished ? (isGameInProgress ? -1 : awayScore) : 0);
+			}
+		}
+	}, [myGambleResult, homeScore, awayScore]); // TODO: 낙관적 업데이트 적용 필요, 지금은 서버 값에 의존하게끔 해둠
 
 	return (
 		<div
